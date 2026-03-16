@@ -19,4 +19,23 @@ theorem add_left_cancel_calc {a b c : R} (h : a + b = a + c) : b = c :=
     _ = -a +(a + c)  := by rw [h]
     _ = (-a + a) + c := by rw [← add_assoc]
     _ = c := by rw[neg_add_cancel, add_comm, add_zero]
+--have gives us a way to prove a smaller hypothesis and then use this
+--proven hypothesis to prove our main goal
+theorem mul_zero (a : R) : a * 0 = 0 := by
+  have h : a * 0 + a * 0 = a * 0 + 0 := by
+    rw [← mul_add, add_zero, add_zero]
+  rw [add_left_cancel h]
+
+theorem zero_mul (a : R) : 0 * a = 0 := by
+  have h : 0*a + 0*a = 0*a + 0 := by
+    rw [← add_mul, add_zero, add_zero]
+  rw[add_left_cancel h]
+
+theorem neg_eq_of_add_eq_zero {a b : R} (h : a + b = 0) : -a = b := by
+  have h1: a+b-a= 0-a :=by
+    rw[h]
+  rw[add_comm,add_sub_assoc,sub_self, add_zero,zero_sub] at h1
+  exact h1.symm
+
+
 end MyRing
